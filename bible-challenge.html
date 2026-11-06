@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mindset Changer · Bible Challenge</title>
+<style>
+:root{--bg:#1a1033;--bg2:#2d1b5e;--card:#ffffff14;--tx:#f6f1ff;--mu:#b9acd9;--gold:#ffc83d;--ok:#3ddc97;--no:#ff5c7a;--bd:#ffffff26;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4efff;--bg2:#e2d6ff;--card:#ffffffcc;--tx:#21123f;--mu:#5d4d86;--gold:#b87900;--ok:#0f9d63;--no:#d6264a;--bd:#2d1b5e30}}
+:root[data-theme="dark"]{--bg:#1a1033;--bg2:#2d1b5e}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(160deg,var(--bg),var(--bg2));color:var(--tx);display:flex;justify-content:center;padding:16px}
+.wrap{width:100%;max-width:560px}
+.brand{text-align:center;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:6px 0 14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:22px;backdrop-filter:blur(8px)}
+h1{font-family:Georgia,serif;font-size:34px;margin:0 0 8px;line-height:1.1;text-align:center}
+h2{font-family:Georgia,serif;font-size:21px;line-height:1.35;margin:14px 0 18px}
+p{color:var(--mu);line-height:1.5;margin:0 0 14px}
+.big{font-size:60px;text-align:center}
+.btn{display:block;width:100%;padding:15px;border-radius:14px;border:0;background:var(--gold);color:#2a1a00;font-size:17px;font-weight:700;cursor:pointer;margin-top:10px}
+.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--bd)}
+.opt{display:block;width:100%;text-align:left;padding:14px 16px;margin:9px 0;border-radius:14px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:16px;cursor:pointer}
+.opt:active{transform:scale(.98)}
+.opt.ok{background:var(--ok);color:#052a1a;border-color:var(--ok)}
+.opt.no{background:var(--no);color:#fff;border-color:var(--no)}
+.top{display:flex;justify-content:space-between;font-size:14px;color:var(--mu);font-weight:600}
+.bar{height:8px;border-radius:8px;background:var(--bd);overflow:hidden;margin:10px 0}
+.bar i{display:block;height:100%;width:100%;background:var(--gold);transition:width .25s linear}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:var(--gold);color:#2a1a00}
+input[type=text]{width:100%;padding:14px;font-size:18px;border-radius:14px;border:1px solid var(--bd);background:var(--card);color:var(--tx);text-align:center}
+.fb{margin-top:12px;padding:12px;border-radius:12px;font-size:15px;background:var(--card);border:1px solid var(--bd)}
+.stats{display:flex;gap:10px;margin:16px 0}.stats div{flex:1;text-align:center;padding:12px 4px;border-radius:14px;background:var(--card);border:1px solid var(--bd)}
+.stats b{display:block;font-size:24px;color:var(--gold)}.stats span{font-size:12px;color:var(--mu)}
+.foot{text-align:center;font-size:12px;color:var(--mu);margin:16px 0}
+.wa{background:#25D366;color:#053d1a;text-align:center;text-decoration:none}.row{display:flex;gap:8px;justify-content:center;margin-bottom:14px}</style></head><body><div class="wrap">
+<div class="brand">✦ Mindset Changer ✦</div><div id="ch" class="row"></div>
+<div id="app" class="card"></div>
+<div class="foot">Renew your mind · Romans 12:2</div>
+</div>
+<script>
+// [type, question, answer data, reference]  m=multiple choice (options, correct idx), t=true/false, w=one word (accepted list)
+const Q=[
+['m','Who built the ark?',['Noah','Moses','Abraham','David'],0,'Genesis 6'],
+['m','How many disciples did Jesus choose?',['7','10','12','40'],2,'Luke 6:13'],
+['m','Who was swallowed by a great fish?',['Peter','Jonah','Elijah','Paul'],1,'Jonah 1:17'],
+['m','What is the first book of the Bible?',['Exodus','Psalms','Matthew','Genesis'],3,'Genesis 1:1'],
+['m','Who defeated Goliath?',['Saul','Samson','David','Joshua'],2,'1 Samuel 17'],
+['m','Where was Jesus born?',['Nazareth','Bethlehem','Jerusalem','Capernaum'],1,'Luke 2:4–7'],
+['m','Who was thrown into the lions’ den?',['Daniel','Joseph','Job','Isaiah'],0,'Daniel 6'],
+['m','Who led Israel out of Egypt?',['Aaron','Joshua','Moses','Caleb'],2,'Exodus 12–14'],
+['m','Which is NOT a fruit of the Spirit?',['Love','Joy','Wealth','Peace'],2,'Galatians 5:22–23'],
+['m','Who was sold by his brothers into slavery?',['Benjamin','Joseph','Reuben','Levi'],1,'Genesis 37'],
+['m','Which book contains the shortest verse, “Jesus wept”?',['John','Mark','Acts','Luke'],0,'John 11:35'],
+['m','Which man lost his strength when his hair was cut?',['Gideon','Samson','Saul','Elisha'],1,'Judges 16'],
+['m','What is the last book of the Bible?',['Jude','Acts','Revelation','Malachi'],2,'Revelation 22'],
+['m','On which mountain did Moses receive the Ten Commandments?',['Sinai','Carmel','Zion','Nebo'],0,'Exodus 19–20'],
+['t','Jesus turned water into wine at a wedding in Cana.',true,'John 2:1–11'],
+['t','The Protestant Bible has 66 books.',true,'Old Testament 39 + New Testament 27'],
+['t','Peter was a tax collector before following Jesus.',false,'It was Matthew; Peter was a fisherman (Matthew 9:9)'],
+['t','David was the first king of Israel.',false,'Saul was first (1 Samuel 10)'],
+['t','Methuselah is the oldest man recorded in the Bible.',true,'Genesis 5:27 · 969 years'],
+['t','Paul was originally named Saul.',true,'Acts 13:9'],
+['t','Jonah spent seven days inside the fish.',false,'Three days and three nights (Jonah 1:17)'],
+['t','Esther became a queen and saved her people.',true,'Esther 4–8'],
+['t','God created the world in six days and rested on the seventh.',true,'Genesis 1–2'],
+['w','Who was the first man God created?',['adam'],'Genesis 2:7'],
+['w','What was the name of the garden where Adam and Eve lived?',['eden','garden of eden'],'Genesis 2:8'],
+['w','Who was Jacob’s twin brother?',['esau'],'Genesis 25:24–26'],
+['w','Which city’s walls fell after Israel marched around it for seven days?',['jericho'],'Joshua 6'],
+['w','Who was the wisest king of Israel, and son of David?',['solomon'],'1 Kings 3'],
+['w','Complete: “The Lord is my ______, I shall not want.”',['shepherd'],'Psalm 23:1'],
+['w','Which disciple denied Jesus three times?',['peter','simon peter'],'Luke 22:54–62'],
+['w','Who was Moses’ brother?',['aaron'],'Exodus 4:14'],
+['w','Which sea did God part for Moses?',['red','red sea'],'Exodus 14'],
+['w','Who was Jesus’ mother?',['mary'],'Luke 1:30–31']
+];
+const $=document.getElementById('app'),N=10,T=20;
+const CHANNEL_URL='https://whatsapp.com/channel/0029VbBO6VSCnA80MGKcFz3y';
+if(CHANNEL_URL)document.getElementById('ch').innerHTML=`<a class="btn ghost" style="width:auto;padding:8px 16px;font-size:14px;text-decoration:none;margin:0" href="${CHANNEL_URL}" target="_blank" rel="noopener">📲 Join our WhatsApp channel</a>`;
+const waLink=t=>'https://wa.me/?text='+encodeURIComponent(t);
+let qs,i,score,streak,best,right,timer,left,done;
+const sh=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+const norm=s=>s.toLowerCase().replace(/[^a-z ]/g,'').replace(/^the /,'').trim();
+let hi=0;try{hi=+localStorage.getItem('mc_bible_hi')||0}catch(e){}
+function home(){
+ $.innerHTML=`<div class="big">📖</div><h1>Bible Challenge</h1><p style="text-align:center">10 questions. Multiple choice, true or false, and one-word answers. Beat the clock, build your streak and earn your rank.</p>
+ <div class="stats"><div><b>${N}</b><span>Questions</span></div><div><b>${T}s</b><span>Per question</span></div><div><b>${hi}</b><span>Your best</span></div></div>
+ <button class="btn" id="go">Start the Challenge ✦</button><a class="btn ghost" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="${waLink('Join me on the Mindset Changer Bible Challenge! '+location.href)}">💬 Invite friends on WhatsApp</a>`;
+ document.getElementById('go').onclick=start;
+}
+function start(){
+ const g={m:[],t:[],w:[]};sh(Q).forEach(q=>g[q[0]].push(q));
+ qs=sh([...g.m.slice(0,4),...g.t.slice(0,3),...g.w.slice(0,3)]);
+ i=0;score=0;streak=0;best=0;right=0;show();
+}
+function show(){
+ clearInterval(timer);done=false;left=T;
+ const q=qs[i],lab={m:'Multiple choice',t:'True or false',w:'One word'}[q[0]];
+ let body='';
+ if(q[0]==='m'){q.opts=sh(q[2].map((t,k)=>[t,k===q[3]]));body=q.opts.map((o,k)=>`<button class="opt" data-k="${k}">${o[0]}</button>`).join('')}
+ if(q[0]==='t')body=`<button class="opt" data-k="1">✔ True</button><button class="opt" data-k="0">✘ False</button>`;
+ if(q[0]==='w')body=`<input type="text" id="w" placeholder="Type your answer" autocomplete="off" autocapitalize="off"><button class="btn" id="sub">Submit</button>`;
+ $.innerHTML=`<div class="top"><span>Question ${i+1}/${N}</span><span>🔥 ${streak} · ⭐ ${score}</span></div>
+ <div class="bar"><i id="tb"></i></div><span class="tag">${lab}</span><h2>${q[1]}</h2>${body}<div id="fb"></div>`;
+ if(q[0]==='w'){const w=document.getElementById('w');w.focus();document.getElementById('sub').onclick=()=>ans(w.value);w.onkeydown=e=>{if(e.key==='Enter')ans(w.value)}}
+ else $.querySelectorAll('.opt').forEach(b=>b.onclick=()=>ans(+b.dataset.k));
+ timer=setInterval(()=>{left--;document.getElementById('tb').style.width=(left/T*100)+'%';if(left<=0)ans(null)},1000);
+}
+function ans(v){
+ if(done)return;done=true;clearInterval(timer);
+ const q=qs[i];let ok=false,shown;
+ if(q[0]==='m'){ok=v!==null&&q.opts[v][1];shown=q[2][q[3]]}
+ if(q[0]==='t'){ok=v!==null&&!!v===q[2];shown=q[2]?'True':'False'}
+ if(q[0]==='w'){ok=v!==null&&q[2].includes(norm(v));shown=q[2][0][0].toUpperCase()+q[2][0].slice(1)}
+ if(ok){streak++;best=Math.max(best,streak);right++;score+=10+Math.ceil(left/4)+(streak>=3?5:0)}else streak=0;
+ $.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;
+  if(q[0]==='m'){if(q.opts[k][1])b.classList.add('ok');else if(k===v)b.classList.add('no')}
+  else{const c=q[2]?1:0;if(k===+b.dataset.k&&+b.dataset.k===c)b.classList.add('ok');else if(+b.dataset.k===v)b.classList.add('no')}});
+ const t=ok?'✅ Correct!'+(streak>=3?' 🔥 Streak bonus!':''):(v===null?'⏰ Time’s up.':'❌ Not quite.')+' Answer: <b>'+shown+'</b>';
+ document.getElementById('fb').innerHTML=`<div class="fb">${t}<br><small style="color:var(--mu)">📜 ${q[q[0]==='m'?4:3]}</small></div><button class="btn" id="nx">${i+1<N?'Next question →':'See my results'}</button>`;
+ document.getElementById('nx').onclick=()=>{i++;i<N?show():end()};
+}
+function end(){
+ try{if(score>hi){hi=score;localStorage.setItem('mc_bible_hi',hi)}}catch(e){}
+ const r=right>=9?['👑','Bible Champion']:right>=7?['🌟','Faithful Scholar']:right>=5?['📜','Growing Disciple']:right>=3?['🌱','Seeker']:['🙏','Keep Reading'];
+ const msg=`I scored ${score} points (${right}/${N}) on the Mindset Changer Bible Challenge and earned the rank “${r[1]}”! Can you beat me?${CHANNEL_URL?' Watch us: '+CHANNEL_URL:''}`;
+ $.innerHTML=`<div class="big">${r[0]}</div><h1>${r[1]}</h1><p style="text-align:center">You got ${right} of ${N} right.</p>
+ <div class="stats"><div><b>${score}</b><span>Points</span></div><div><b>${best}</b><span>Best streak</span></div><div><b>${hi}</b><span>High score</span></div></div>
+ <button class="btn" id="again">Play again ↻</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(msg+' '+location.href)}">💬 Share on WhatsApp</a><button class="btn ghost" id="sh">Copy / share elsewhere</button><div id="fb"></div>`;
+ document.getElementById('again').onclick=start;
+ document.getElementById('sh').onclick=async()=>{try{if(navigator.share){await navigator.share({text:msg})}else{await navigator.clipboard.writeText(msg);document.getElementById('fb').innerHTML='<div class="fb">Score copied. Paste it to your friends!</div>'}}catch(e){document.getElementById('fb').innerHTML='<div class="fb">'+msg+'</div>'}};
+}
+home();
+</script></body></html>
