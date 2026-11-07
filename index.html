@@ -2,15 +2,15 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Mindset Changer · Bible Challenge</title>
-<style></style>
+<style>
 :root{--bg:#1a1033;--bg2:#2d1b5e;--card:#ffffff14;--tx:#f6f1ff;--mu:#b9acd9;--gold:#ffc83d;--ok:#3ddc97;--no:#ff5c7a;--bd:#ffffff26;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4efff;--bg2:#e2d6ff;--card:#ffffffcc;--tx:#21123f;--mu:#5d4d86;--gold:#b87900;--ok:#0f9d63;--no:#d6264a;--bd:#2d1b5e30}}
 :root[data-theme="dark"]{--bg:#1a1033;--bg2:#2d1b5e}
 *{box-sizing:border-box}
-body{margin:0; Min-Hyuk html:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(160deg,var(--bg),var(--bg2));color:var(--tx);display:flex;justify-content:center;padding:16px}
+body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(160deg,var(--bg),var(--bg2));color:var(--tx);display:flex;justify-content:center;padding:16px}
 .wrap{width:100%;max-width:560px}
 .brand{text-align:center;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:6px 0 14px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:22px;backdrop-filter:blur(8px)} 
+.card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:22px;backdrop-filter:blur(8px)}
 h1{font-family:Georgia,serif;font-size:34px;margin:0 0 8px;line-height:1.1;text-align:center}
 h2{font-family:Georgia,serif;font-size:21px;line-height:1.35;margin:14px 0 18px}
 p{color:var(--mu);line-height:1.5;margin:0 0 14px}
@@ -34,7 +34,7 @@ input[type=text]{width:100%;padding:14px;font-size:18px;border-radius:14px;borde
 <div class="brand">✦ Mindset Changer ✦</div><div id="ch" class="row"></div>
 <div id="app" class="card"></div>
 <div class="foot">Renew your mind · Romans 12:2</div>
-</div><div class="foot"><a href="mailto: mindsetchanger123@gmail.com?subject=Bible%20Challenge%20Feedback&body=Hello%20Mindset%20Changer%2C%0A%0A" style="color:var(--gold);font-weight:700;text-decoration:none">✉️ Send us feedback</a></div>
+</div>
 <script>
 // [type, question, answer data, reference]  m=multiple choice (options, correct idx), t=true/false, w=one word (accepted list)
 const Q=[
@@ -76,18 +76,28 @@ const $=document.getElementById('app'),N=10,T=20;
 const CHANNEL_URL='https://whatsapp.com/channel/0029VbBO6VSCnA80MGKcFz3y';
 if(CHANNEL_URL)document.getElementById('ch').innerHTML=`<a class="btn ghost" style="width:auto;padding:8px 16px;font-size:14px;text-decoration:none;margin:0" href="${CHANNEL_URL}" target="_blank" rel="noopener">📲 Join our WhatsApp channel</a>`;
 const waLink=t=>'https://wa.me/?text='+encodeURIComponent(t);
-let qs,i,score,streak,best,right,timer,left,done;
+let qs,i,score,streak,best,right,timer,left,done,mode='mix';
 const sh=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
 const norm=s=>s.toLowerCase().replace(/[^a-z ]/g,'').replace(/^the /,'').trim();
 let hi=0;try{hi=+localStorage.getItem('mc_bible_hi')||0}catch(e){}
+const BK=[['Law (Books of Moses)',['Genesis','Exodus','Leviticus','Numbers','Deuteronomy']],['Old Testament History',['Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther']],['Poetry and Wisdom',['Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon']],['Major Prophets',['Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel']],['Minor Prophets',['Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi']],['Gospels',['Matthew','Mark','Luke','John']],['New Testament History',['Acts']],['Paul’s Letters',['Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon']],['General Letters',['Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude']],['Prophecy',['Revelation']]];
+const BW=[['w','Which book comes right after Genesis?',['exodus'],'Genesis, then Exodus'],['w','What is the first book of the New Testament?',['matthew'],'Matthew 1'],['w','Which book comes right after Psalms?',['proverbs'],'Psalms, then Proverbs'],['w','Which book comes right before Revelation?',['jude'],'Jude, then Revelation'],['w','Which Gospel was written by a doctor?',['luke'],'Colossians 4:14'],['w','Which Old Testament book is named after a brave queen?',['esther'],'Esther'],['w','Which book tells the story of the early church, written by Luke?',['acts','acts of the apostles'],'Acts 1:1'],['w','Which book of the Bible has the most chapters (150)?',['psalms','psalm'],'Psalms']];
+function bookQs(){const all=[];BK.forEach(([c,b])=>b.forEach(n=>all.push([n,c])));const cats=BK.map(x=>x[0]),out=[];
+ sh(all).slice(0,12).forEach(([n,c],k)=>{const others=sh(cats.filter(x=>x!==c));
+  if(k%2===0){const s=sh(others.slice(0,3).concat(c));out.push(['m','Which group of books does '+n+' belong to?',s,s.indexOf(c),n+' · '+c])}
+  else{const tr=Math.random()<.5;out.push(['t',n+' belongs to: '+(tr?c:others[0])+'.',tr,n+' is in '+c])}});
+ return sh(out.concat(BW))}
+function browse(){
+ $.innerHTML='<h1>📚 Books of the Bible</h1><p style="text-align:center">All 66 books in 10 groups: law, history, poetry, prophets, gospels, letters and more.</p>'+BK.map(([c,b])=>`<div style="margin:14px 0"><b style="color:var(--gold)">${c} (${b.length})</b><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${b.map(n=>`<span class="tag" style="background:var(--card);color:var(--tx);border:1px solid var(--bd);text-transform:none;letter-spacing:0;font-weight:500">${n}</span>`).join('')}</div></div>`).join('')+'<button class="btn" id="bk">Take the Books Quiz ✦</button><button class="btn ghost" id="hm">← Back</button>';
+ document.getElementById('bk').onclick=()=>{mode='books';start()};document.getElementById('hm').onclick=home}
 function home(){
  $.innerHTML=`<div class="big">📖</div><h1>Bible Challenge</h1><p style="text-align:center">10 questions. Multiple choice, true or false, and one-word answers. Beat the clock, build your streak and earn your rank.</p>
  <div class="stats"><div><b>${N}</b><span>Questions</span></div><div><b>${T}s</b><span>Per question</span></div><div><b>${hi}</b><span>Your best</span></div></div>
- <button class="btn" id="go">Start the Challenge ✦</button><a class="btn ghost" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="${waLink('Join me on the Mindset Changer Bible Challenge! '+location.href)}">💬 Invite friends on WhatsApp</a>`;
- document.getElementById('go').onclick=start;
+ <button class="btn" id="go">Start the Challenge ✦</button><button class="btn ghost" id="bq">📖 Bible Books Quiz</button><button class="btn ghost" id="bb">📚 Browse the books by category</button><a class="btn ghost" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="${waLink('Join me on the Mindset Changer Bible Challenge! '+location.href)}">💬 Invite friends on WhatsApp</a>`;
+ document.getElementById('go').onclick=()=>{mode='mix';start()};document.getElementById('bq').onclick=()=>{mode='books';start()};document.getElementById('bb').onclick=browse;
 }
 function start(){
- const g={m:[],t:[],w:[]};sh(Q).forEach(q=>g[q[0]].push(q));
+ const g={m:[],t:[],w:[]};sh(mode==='books'?bookQs():Q.concat(bookQs().slice(0,10))).forEach(q=>g[q[0]].push(q));
  qs=sh([...g.m.slice(0,4),...g.t.slice(0,3),...g.w.slice(0,3)]);
  i=0;score=0;streak=0;best=0;right=0;show();
 }
@@ -130,3 +140,4 @@ function end(){
 }
 home();
 </script></body></html>
+ 
