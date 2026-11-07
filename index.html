@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mindset Changer · Bible Challenge</title><link rel="icon" href="logo.jpg">
+<title>Mindset Changer · Bible Challenge</title><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#1a1033"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Mindset Changer">
 <style>
 :root{--bg:#1a1033;--bg2:#2d1b5e;--card:#ffffff14;--tx:#f6f1ff;--mu:#b9acd9;--gold:#ffc83d;--ok:#3ddc97;--no:#ff5c7a;--bd:#ffffff26;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4efff;--bg2:#e2d6ff;--card:#ffffffcc;--tx:#21123f;--mu:#5d4d86;--gold:#b87900;--ok:#0f9d63;--no:#d6264a;--bd:#2d1b5e30}}
@@ -30,7 +30,7 @@ input[type=text]{width:100%;padding:14px;font-size:18px;border-radius:14px;borde
 .stats{display:flex;gap:10px;margin:16px 0}.stats div{flex:1;text-align:center;padding:12px 4px;border-radius:14px;background:var(--card);border:1px solid var(--bd)}
 .stats b{display:block;font-size:24px;color:var(--gold)}.stats span{font-size:12px;color:var(--mu)}
 .foot{text-align:center;font-size:12px;color:var(--mu);margin:16px 0}
-.wa{background:#25D366;color:#053d1a;text-align:center;text-decoration:none}.row{display:flex;gap:8px;justify-content:center;margin-bottom:14px}@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.wa{background:#25D366;color:#053d1a;text-align:center;text-decoration:none}.row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 /* loading screen */
 #splash{position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:linear-gradient(160deg,var(--bg),var(--bg2));animation:splashout .7s ease 2.6s forwards}
 @keyframes splashout{to{opacity:0;visibility:hidden}}
@@ -152,5 +152,8 @@ function chk(){const r=resting();
   $.innerHTML=`<div class="big">😴</div><h1>Admin is resting</h1><p style="text-align:center">Kindly try again tomorrow. The Bible Challenge reopens at ${REST_TO}:00 AM (Zambia time). Thank you for your patience and God bless you.</p>${CHANNEL_URL?`<a class="btn" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="${CHANNEL_URL}">📲 Join our WhatsApp channel meanwhile</a>`:''}`}
  else if(!r&&isRest){isRest=false;home()}}
 chk();setInterval(chk,60000);
+// install as an app
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+let dp;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;const b=document.createElement('button');b.className='btn ghost';b.style.cssText='width:auto;padding:8px 16px;font-size:14px;margin:0';b.textContent='⬇️ Install app';b.onclick=async()=>{dp.prompt();await dp.userChoice;b.remove()};document.getElementById('ch').appendChild(b)});
 </script></body></html>
-                                                                                                                                                                                                                                                                                                                                                                                                                                              
+ 
