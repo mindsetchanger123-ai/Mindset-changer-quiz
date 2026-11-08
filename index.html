@@ -111,9 +111,12 @@ const sh=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
 const norm=s=>s.toLowerCase().replace(/[^a-z ]/g,'').replace(/^the /,'').trim();
 let hi=0;try{hi=+localStorage.getItem('mc_bible_hi')||0}catch(e){}
 const S=window.SUPPORT||{};
+// visitor statistics (GoatCounter): active once STATS_CODE is set in config.js
+if(window.STATS_CODE){const g=document.createElement('script');g.async=true;g.dataset.goatcounter='https://'+window.STATS_CODE+'.goatcounter.com/count';g.src='//gc.zgo.at/count.js';document.head.appendChild(g)}
+const track=(p,ti)=>{try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:p,title:ti,event:true})}catch(e){}};
 const waTo=(n,t)=>{let d=String(n).replace(/\D/g,'');if(d[0]==='0')d='260'+d.slice(1);return 'https://wa.me/'+d+'?text='+encodeURIComponent(t)};
 const supportBtn=()=>(S.mtn||S.airtel)?'<button class="btn ghost" onclick="openSupport()">💛 Support the Platform</button>':'';
-function openSupport(){
+function openSupport(){track('support-open','Support opened');
  const rows=[['MTN MoMo',S.mtn],['Airtel Money',S.airtel]].filter(r=>r[1]).map(r=>`<div class="num"><div><small>${r[0]}</small><b>${r[1]}</b></div><button class="cp" data-n="${r[1]}">Copy</button></div>`).join('');
  const wa=S.whatsapp?`<a class="btn wa" target="_blank" rel="noopener" href="${waTo(S.whatsapp,'Good day '+(S.channelName||'Mindset Changer')+', I have made a contribution to support the platform. Thank you.')}">💬 Notify Us on WhatsApp (optional)</a>`:'';
  const d=document.createElement('div');d.id='sup';
@@ -129,7 +132,7 @@ function home(){
  <button class="btn" id="go">Start the Challenge ✦</button><a class="btn ghost" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="${waLink('Join me on the Mindset Changer Bible Challenge! '+location.href)}">💬 Invite friends on WhatsApp</a>`;
  document.getElementById('go').onclick=start;
 }
-function start(){
+function start(){track('quiz-start','Quiz started');
  const g={m:[],t:[],w:[]};sh(Q).forEach(q=>g[q[0]].push(q));
  qs=sh([...g.m.slice(0,4),...g.t.slice(0,3),...g.w.slice(0,3)]);
  i=0;score=0;streak=0;best=0;right=0;show();
@@ -161,7 +164,7 @@ function ans(v){
  document.getElementById('fb').innerHTML=`<div class="fb">${t}<br><small style="color:var(--mu)">📜 ${q[q[0]==='m'?4:3]}</small></div><button class="btn" id="nx">${i+1<N?'Next question →':'See my results'}</button>`;
  document.getElementById('nx').onclick=()=>{i++;i<N?show():end()};
 }
-function end(){
+function end(){track('quiz-complete','Quiz completed');
  recStats();try{if(score>hi){hi=score;localStorage.setItem('mc_bible_hi',hi)}}catch(e){}
  const r=right>=9?['👑','Bible Champion']:right>=7?['🌟','Faithful Scholar']:right>=5?['📜','Growing Disciple']:right>=3?['🌱','Seeker']:['🙏','Keep Reading'];
  const msg=`I scored ${score} points (${right}/${N}) on the Mindset Changer Bible Challenge and earned the rank “${r[1]}”! Can you beat me?${CHANNEL_URL?' Watch us: '+CHANNEL_URL:''}`;
@@ -172,15 +175,6 @@ function end(){
  document.getElementById('sh').onclick=async()=>{try{if(navigator.share){await navigator.share({text:msg})}else{await navigator.clipboard.writeText(msg);document.getElementById('fb').innerHTML='<div class="fb">Score copied. Paste it to your friends!</div>'}}catch(e){document.getElementById('fb').innerHTML='<div class="fb">'+msg+'</div>'}};
 }
 home();
-const REST_FROM=23,REST_TO=5;
-function lusakaHour(){try{return +new Intl.DateTimeFormat('en-GB',{hour:'numeric',hour12:false,timeZone:'Africa/Lusaka'}).format(new Date())%24}catch(e){return new Date().getHours()}}
-function resting(){const h=lusakaHour();return h>=REST_FROM||h<REST_TO}
-let isRest=false;
-function chk(){const r=resting();
- if(r&&!isRest){isRest=true;clearInterval(timer);
-  $.innerHTML=`<div class="big">😴</div><h1>Admin is resting</h1><p style="text-align:center">Kindly try again tomorrow. The Bible Challenge reopens at ${REST_TO}:00 AM (Zambia time). Thank you for your patience and God bless you.</p>${CHANNEL_URL?`<a class="btn" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="${CHANNEL_URL}">📲 Join our WhatsApp channel meanwhile</a>`:''}`}
- else if(!r&&isRest){isRest=false;home()}}
-chk();setInterval(chk,60000);
 // bottom navigation
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const QUOTES=[
@@ -218,7 +212,7 @@ const FACTS=[
 ];
 const dayIdx=n=>Math.floor(Date.now()/864e5)%n;
 let qi=dayIdx(QUOTES.length),fi=dayIdx(FACTS.length);
-function tab(n){['home','inspire','profile'].forEach(k=>{document.getElementById('v-'+k).hidden=k!==n});document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===n));if(n==='inspire')inspire();if(n==='profile')profile();window.scrollTo(0,0)}
+function tab(n){track('tab-'+n,'Tab '+n);['home','inspire','profile'].forEach(k=>{document.getElementById('v-'+k).hidden=k!==n});document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===n));if(n==='inspire')inspire();if(n==='profile')profile();window.scrollTo(0,0)}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 function inspire(){
  const q=QUOTES[qi],f=FACTS[fi];
@@ -259,4 +253,5 @@ function profile(){
 // install as an app
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 let dp;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;const b=document.createElement('button');b.className='btn ghost';b.style.cssText='width:auto;padding:8px 16px;font-size:14px;margin:0';b.textContent='⬇️ Install app';b.onclick=async()=>{dp.prompt();await dp.userChoice;b.remove()};document.getElementById('ch').appendChild(b)});
-</script></body></html>
+</script>
+<script src="rest.js"></script></body></html>
