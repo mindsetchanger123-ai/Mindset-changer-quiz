@@ -4,7 +4,7 @@ window.SUPPORT={
   channelName:'Mindset Changer',
   mtn:'',
   airtel:'0779319640',
-  accountName:'Maluba',
+  accountName:'confirm using WhatsApp below',
   whatsapp:'0779319640',
   thanks:'Kindly support the Mindset Changer platform with any amount of your choice. Once you have sent your contribution, kindly confirm using the WhatsApp button below. Your support is highly appreciated.'
 };
