@@ -4,7 +4,11 @@ window.SUPPORT={
   channelName:'Mindset Changer',
   mtn:'',
   airtel:'0779319640',
-  accountName:'confirm using Whatsapp below',
+  accountName:'please use the WhatsApp below to confirm',
   whatsapp:'0779319640',
   thanks:'Kindly support the Mindset Changer platform with any amount of your choice. Once you have sent your contribution, kindly confirm using the WhatsApp button below. Your support is highly appreciated.'
 };
+
+// Visitor statistics: put your GoatCounter site code between the quotes (the part before .goatcounter.com).
+// Leave it empty to keep counting switched off.
+window.STATS_CODE='mindsetchanger';
