@@ -3,8 +3,8 @@
 // TO SWITCH ON: change  on:false  to  on:true  and save.   TO SWITCH OFF: change it back to false.
 window.REST={
   on:true,   // false = quiz always open, true = resting hours active
-  from:16:20,    // rest starts at this hour (23 = 11 PM)
-  to:16:23        // quiz reopens at this hour (5 = 5 AM)
+  from:16:19,    // rest starts at this hour (23 = 11 PM)
+  to:16:23,        // quiz reopens at this hour (5 = 5 AM)
 };
 (function(){
   const R=window.REST||{};
